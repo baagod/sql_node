@@ -72,16 +72,16 @@ CREATE TABLE user (
 -- 联合主键中的每个字段都不能为空，并且加起来不能和已设置的联合主键重复。
 CREATE TABLE user (
     id INT,
-  	name VARCHAR(20),
+    name VARCHAR(20),
     password VARCHAR(20),
-		PRIMARY KEY(id, name)
+    PRIMARY KEY(id, name)
 );
 
 -- 自增约束
 -- 自增约束的主键由系统自动递增分配。
 CREATE TABLE user (
-		id INT PRIMARY KEY AUTO_INCREMENT,
-  	name VARCHAR(20)
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(20)
 );
 
 -- 添加主键约束
@@ -98,9 +98,9 @@ ALTER TABLE user drop PRIMARY KEY;
 ```mysql
 -- 建表时创建唯一主键
 CREATE TABLE user (
-		id INT,
-		name VARCHAR(20),
-		UNIQUE(name)
+    id INT,
+    name VARCHAR(20),
+    UNIQUE(name)
 );
 
 -- 添加唯一主键
@@ -118,8 +118,8 @@ ALTER TABLE user DROP INDEX name;
 -- 建表时添加非空约束
 -- 约束某个字段不能为空
 CREATE TABLE user (
-		id INT,
-		name VARCHAR(20) NOT NULL
+    id INT,
+    name VARCHAR(20) NOT NULL
 );
 
 -- 移除非空约束
@@ -132,9 +132,9 @@ ALTER TABLE user MODIFY name VARCHAR(20);
 -- 建表时添加默认约束
 -- 约束某个字段的默认值
 CREATE TABLE user2 (
-		id INT,
-		name VARCHAR(20),
-		age INT DEFAULT 10
+    id INT,
+    name VARCHAR(20),
+    age INT DEFAULT 10
 );
 
 -- 移除非空约束
@@ -146,18 +146,18 @@ ALTER TABLE user MODIFY age INT;
 ```mysql
 -- 班级
 CREATE TABLE classes (
-		id INT PRIMARY KEY,
-		name VARCHAR(20)
+    id INT PRIMARY KEY,
+    name VARCHAR(20)
 );
 
 -- 学生表
 CREATE TABLE students (
-		id INT PRIMARY KEY,
-		name VARCHAR(20),
-		-- 这里的 class_id 要和 classes 中的 id 字段相关联
-		class_id INT,
-		-- 表示 class_id 的值必须来自于 classes 中的 id 字段值
-		FOREIGN KEY(class_id) REFERENCES classes(id)
+    id INT PRIMARY KEY,
+    name VARCHAR(20),
+    -- 这里的 class_id 要和 classes 中的 id 字段相关联
+    class_id INT,
+    -- 表示 class_id 的值必须来自于 classes 中的 id 字段值
+    FOREIGN KEY(class_id) REFERENCES classes(id)
 );
 
 -- 1. 主表（父表）classes 中没有的数据值，在副表（子表）students 中，是不可以使用的；
@@ -722,9 +722,9 @@ SELECT NO FROM course WHERE t_no = ( SELECT NO FROM teacher WHERE NAME = '张旭
 
 ```mysql
 SELECT * FROM score WHERE c_no = (
-		SELECT no FROM course WHERE t_no = ( 
-    		SELECT no FROM teacher WHERE NAME = '张旭' 
-  	)
+        SELECT no FROM course WHERE t_no = ( 
+        SELECT no FROM teacher WHERE NAME = '张旭' 
+    )
 );
 ```
 
@@ -747,7 +747,7 @@ SELECT no, name FROM teacher;
 +-----+--------+
 
 SELECT name FROM teacher WHERE no IN (
-		-- 在这里找到对应的条件
+    -- 在这里找到对应的条件
 );
 ```
 
@@ -806,7 +806,7 @@ SELECT c_no FROM score GROUP BY c_no HAVING COUNT(*) > 5;
 
 ```mysql
 SELECT t_no FROM course WHERE no IN (
-		SELECT c_no FROM score GROUP BY c_no HAVING COUNT(*) > 5
+    SELECT c_no FROM score GROUP BY c_no HAVING COUNT(*) > 5
 );
 +------+
 | t_no |
@@ -819,10 +819,10 @@ SELECT t_no FROM course WHERE no IN (
 
 ```mysql
 SELECT name FROM teacher WHERE no IN (
-  	-- 最终条件
-		SELECT t_no FROM course WHERE no IN (
-				SELECT c_no FROM score GROUP BY c_no HAVING COUNT(*) > 5
-		)
+    -- 最终条件
+    SELECT t_no FROM course WHERE no IN (
+        SELECT c_no FROM score GROUP BY c_no HAVING COUNT(*) > 5
+    )
 );
 ```
 
@@ -844,7 +844,7 @@ SELECT no, name, department FROM teacher WHERE department = '计算机系'
 
 -- 通过 course 表查询该教师的课程编号
 SELECT no FROM course WHERE t_no IN (
-		SELECT no FROM teacher WHERE department = '计算机系'
+    SELECT no FROM teacher WHERE department = '计算机系'
 );
 +-------+
 | no    |
@@ -855,9 +855,9 @@ SELECT no FROM course WHERE t_no IN (
 
 -- 根据筛选出来的课程号查询成绩表
 SELECT * FROM score WHERE c_no IN (
-		SELECT no FROM course WHERE t_no IN (
-				SELECT no FROM teacher WHERE department = '计算机系'
-		)
+    SELECT no FROM course WHERE t_no IN (
+        SELECT no FROM teacher WHERE department = '计算机系'
+    )
 );
 +------+-------+--------+
 | s_no | c_no  | degree |
@@ -881,12 +881,12 @@ SELECT * FROM score WHERE c_no IN (
 ```mysql
 -- NOT: 代表逻辑非
 SELECT * FROM teacher WHERE department = '计算机系' AND profession NOT IN (
-		SELECT profession FROM teacher WHERE department = '电子工程系'
+    SELECT profession FROM teacher WHERE department = '电子工程系'
 )
 -- 合并两个集
 UNION
 SELECT * FROM teacher WHERE department = '电子工程系' AND profession NOT IN (
-		SELECT profession FROM teacher WHERE department = '计算机系'
+    SELECT profession FROM teacher WHERE department = '计算机系'
 );
 ```
 
@@ -920,7 +920,7 @@ SELECT * FROM score WHERE c_no = '3-245';
 -- 也就是说，在 3-105 成绩中，只要有一个大于从 3-245 筛选出来的任意行就符合条件，
 -- 最后根据降序查询结果。
 SELECT * FROM score WHERE c_no = '3-105' AND degree > ANY(
-		SELECT degree FROM score WHERE c_no = '3-245'
+    SELECT degree FROM score WHERE c_no = '3-245'
 ) ORDER BY degree DESC;
 +------+-------+--------+
 | s_no | c_no  | degree |
@@ -943,7 +943,7 @@ SELECT * FROM score WHERE c_no = '3-105' AND degree > ANY(
 -- ALL: 符合SQL语句中的所有条件。
 -- 也就是说，在 3-105 每一行成绩中，都要大于从 3-245 筛选出来全部行才算符合条件。
 SELECT * FROM score WHERE c_no = '3-105' AND degree > ALL(
-		SELECT degree FROM score WHERE c_no = '3-245'
+    SELECT degree FROM score WHERE c_no = '3-245'
 );
 +------+-------+--------+
 | s_no | c_no  | degree |
@@ -994,7 +994,7 @@ SELECT degree FROM score;
 -- score a (b): 将表声明为 a (b)，
 -- 如此就能用 a.c_no = b.c_no 作为条件执行查询了。
 SELECT * FROM score a WHERE degree < (
-		(SELECT AVG(degree) FROM score b WHERE a.c_no = b.c_no)
+    (SELECT AVG(degree) FROM score b WHERE a.c_no = b.c_no)
 );
 +------+-------+--------+
 | s_no | c_no  | degree |
@@ -1181,7 +1181,7 @@ SELECT sex FROM student WHERE name = '李军';
 
 -- 根据性别查询 name 和 sex
 SELECT name, sex FROM student WHERE sex = (
-		SELECT sex FROM student WHERE name = '李军'
+    SELECT sex FROM student WHERE name = '李军'
 );
 +-----------+-----+
 | name      | sex |
@@ -1203,9 +1203,9 @@ SELECT name, sex FROM student WHERE sex = (
 
 ```mysql
 SELECT name, sex, class FROM student WHERE sex = (
-		SELECT sex FROM student WHERE name = '李军'
+    SELECT sex FROM student WHERE name = '李军'
 ) AND class = (
-		SELECT class FROM student WHERE name = '李军'
+    SELECT class FROM student WHERE name = '李军'
 );
 +-----------+-----+-------+
 | name      | sex | class |
@@ -1224,9 +1224,9 @@ SELECT name, sex, class FROM student WHERE sex = (
 
 ```mysql
 SELECT * FROM score WHERE c_no = (
-		SELECT no FROM course WHERE name = '计算机导论'
+    SELECT no FROM course WHERE name = '计算机导论'
 ) AND s_no IN (
-		SELECT no FROM student WHERE sex = '男'
+    SELECT no FROM student WHERE sex = '男'
 );
 +------+-------+--------+
 | s_no | c_no  | degree |
@@ -1244,9 +1244,9 @@ SELECT * FROM score WHERE c_no = (
 
 ```mysql
 CREATE TABLE grade (
-	low INT(3),
-	upp INT(3),
-	grade char(1)
+    low INT(3),
+    upp INT(3),
+    grade char(1)
 );
 
 INSERT INTO grade VALUES (90, 100, 'A');
@@ -1300,14 +1300,14 @@ WHERE degree BETWEEN low AND upp;
 CREATE DATABASE testJoin;
 
 CREATE TABLE person (
-	id INT,
-	name VARCHAR(20),
-	cardId INT
+    id INT,
+    name VARCHAR(20),
+    cardId INT
 );
 
 CREATE TABLE card (
-	id INT,
-	name VARCHAR(20)
+    id INT,
+    name VARCHAR(20)
 );
 
 INSERT INTO card VALUES (1, '饭卡'), (2, '建行卡'), (3, '农行卡'), (4, '工商卡'), (5, '邮政卡');
@@ -1457,9 +1457,9 @@ CREATE DATABASE bank;
 USE bank;
 
 CREATE TABLE user (
-  	id INT PRIMARY KEY,
-  	name VARCHAR(20),
-	  money INT
+    id INT PRIMARY KEY,
+    name VARCHAR(20),
+    money INT
 );
 
 INSERT INTO user VALUES (1, 'a', 1000);
