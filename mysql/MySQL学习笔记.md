@@ -722,7 +722,7 @@ SELECT NO FROM course WHERE t_no = ( SELECT NO FROM teacher WHERE NAME = '张旭
 
 ```mysql
 SELECT * FROM score WHERE c_no = (
-        SELECT no FROM course WHERE t_no = ( 
+    SELECT no FROM course WHERE t_no = ( 
         SELECT no FROM teacher WHERE NAME = '张旭' 
     )
 );
@@ -1570,7 +1570,7 @@ SELECT * FROM user;
 >
 >    `@@AUTOCOMMIT = 0` 时，使用 `COMMIT` 命令提交事务。
 >
->    3. **事务回滚**
+> 3. **事务回滚**
 >
 >    `@@AUTOCOMMIT = 0` 时，使用 `ROLLBACK` 命令回滚事务。
 
@@ -1675,17 +1675,17 @@ ROLLBACK;
 
 ### 事务的隔离性
 
-**事务的隔离性可分为四种 ( 性能从低到高 ) ：**
+**事务的隔离性可分为四种 ( 性能从低到高 )** ：
 
-1. **READ UNCOMMITTED ( 读取未提交 ) **
+1. **READ UNCOMMITTED ( 读取未提交 )**
 
    如果有多个事务，那么任意事务都可以看见其他事务的**未提交数据**。
 
-2. **READ COMMITTED ( 读取已提交 ) **
+2. **READ COMMITTED ( 读取已提交 )**
 
    只能读取到其他事务**已经提交的数据**。
 
-3. **REPEATABLE READ ( 可被重复读 ) **
+3. **REPEATABLE READ ( 可被重复读 )**
 
    如果有多个连接都开启了事务，那么事务之间不能共享数据记录，否则只能共享已提交的记录。
 
