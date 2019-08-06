@@ -377,6 +377,7 @@ SELECT COUNT(*) FROM student WHERE class = '95031';
 -- 查询 score 表中的最高分的学生学号和课程编号（子查询或排序查询）。
 -- (SELECT MAX(degree) FROM score): 子查询，算出最高分
 SELECT s_no, c_no FROM score WHERE degree = (SELECT MAX(degree) FROM score);
+
 --  排序查询
 -- LIMIT r, n: 表示从第r行开始，查询n条数据
 SELECT s_no, c_no, degree FROM score ORDER BY degree DESC LIMIT 0, 1;
