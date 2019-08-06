@@ -19,7 +19,7 @@ show databases;
 -- 创建数据库
 CREATE DATABASE test;
 
---切换数据库
+-- 切换数据库
 use test;
 
 -- 显示数据库中的所有表
@@ -43,8 +43,7 @@ desc pet;
 SELECT * from pet;
 
 -- 插入数据
-INSERT INTO pet
-VALUES ('puffball', 'Diane', 'hamster', 'f', '1990-03-30', NULL);
+INSERT INTO pet VALUES ('puffball', 'Diane', 'hamster', 'f', '1990-03-30', NULL);
 
 -- 修改数据
 UPDATE pet SET name = 'squirrel' where owner = 'Diane';
